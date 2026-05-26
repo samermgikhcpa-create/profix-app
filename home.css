@@ -1,0 +1,151 @@
+.home-header {
+  padding: 20px 0 16px;
+}
+
+.home-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-greeting {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.home-greeting span {
+  color: #4a6cf7;
+}
+
+.btn-logout {
+  font-size: 13px;
+  color: #ef4444;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 14px;
+  border: 1.5px solid #fca5a5;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.btn-logout:hover {
+  background: #fef2f2;
+}
+
+.home-sub {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 0 14px;
+  margin-top: 16px;
+  border: 1.5px solid transparent;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.search-bar:focus-within {
+  border-color: #4a6cf7;
+  background: #ffffff;
+}
+
+.search-icon {
+  font-size: 16px;
+  margin-right: 10px;
+  color: #9ca3af;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 14px 0;
+  font-size: 15px;
+  outline: none;
+  color: #1a1a2e;
+}
+
+.search-bar input::placeholder {
+  color: #9ca3af;
+}
+
+.services-section {
+  padding-top: 24px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 14px;
+}
+
+.subservices-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.service-card {
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px 14px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.service-card:hover {
+  border-color: #4a6cf7;
+  box-shadow: 0 4px 12px rgba(74, 108, 247, 0.08);
+}
+
+.service-card:active {
+  transform: scale(0.97);
+}
+
+.service-card .card-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.service-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.service-card p {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.card-price {
+  display: block;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #9ca3af;
+  padding: 40px 0;
+  font-size: 14px;
+}
