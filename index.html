@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ProFIX</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- LANGUAGE -->
+    <div id="s-language" class="screen hidden">
+      <div class="header">
+        <div class="logo">
+          <span class="logo-icon">&#9881;</span>
+          <h1 data-i18n="appName">ProFIX</h1>
+        </div>
+        <p class="subtitle" data-i18n="langTitle">Choose your language</p>
+      </div>
+      <div class="lang-grid">
+        <div class="lang-card" data-lang="ku">
+          <div class="flag flag-kurdish">
+            <div class="flag-stripe red"></div>
+            <div class="flag-stripe white"><span class="sun"></span></div>
+            <div class="flag-stripe green"></div>
+          </div>
+          <span class="lang-name">Kurdish (Sorani)</span>
+          <span class="lang-native">کوردی (سۆرانی)</span>
+        </div>
+        <div class="lang-card" data-lang="ar">
+          <div class="flag flag-iraq">
+            <div class="flag-stripe red"></div>
+            <div class="flag-stripe white"><span class="takbir">الله أكبر</span></div>
+            <div class="flag-stripe black"></div>
+          </div>
+          <span class="lang-name">Arabic</span>
+          <span class="lang-native">العربية</span>
+        </div>
+        <div class="lang-card" data-lang="en">
+          <div class="flag flag-uk">
+            <div class="uk-diag"></div>
+            <div class="uk-cross"></div>
+            <div class="uk-red"></div>
+          </div>
+          <span class="lang-name">English</span>
+          <span class="lang-native">English</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="s-signup" class="screen hidden">
+      <button class="btn-back" data-sc="language" aria-label="Back">&#8592;</button>
+      <div class="header">
+        <div class="logo">
+          <span class="logo-icon">&#9881;</span>
+          <h1 data-i18n="appName">ProFIX</h1>
+        </div>
+        <p class="subtitle" data-i18n="signupSubtitle">Fix it with ProFIX</p>
+      </div>
+
+      <form id="signupForm" class="signup-form" novalidate>
+        <p class="step-label" data-i18n="createAccount">Create your account</p>
+
+        <div class="input-group">
+          <label data-i18n="fullName">Full Name</label>
+          <input type="text" id="fn" name="fn" placeholder="John Doe" autocomplete="name">
+          <span class="error-message" id="fnE"></span>
+        </div>
+        <div class="input-group">
+          <label data-i18n="email">Email Address</label>
+          <input type="email" id="em" name="em" placeholder="john@example.com" autocomplete="email">
+          <span class="error-message" id="emE"></span>
+        </div>
+        <div class="input-group">
+          <label data-i18n="phone">Phone Number <span class="whatsapp-badge">&#9900; WhatsApp</span></label>
+          <input type="tel" id="ph" name="ph" placeholder="+1 555-1234" autocomplete="tel">
+          <span class="error-message" id="phE"></span>
+          <span class="field-note" data-i18n="whatsappNote">Must be a WhatsApp-enabled number</span>
+        </div>
+        <div class="input-group">
+          <label data-i18n="password">Password</label>
+          <input type="password" id="pw" name="pw" placeholder="Min. 6 characters" autocomplete="new-password">
+          <span class="error-message" id="pwE"></span>
+        </div>
+        <div class="input-group">
+          <label data-i18n="address">Address</label>
+          <div class="address-wrapper">
+            <input type="text" id="ad" name="ad" placeholder="123 Main St, City" autocomplete="street-address">
+            <button type="button" id="dl" class="btn-detect" data-i18n-t="detectLocation" title="Detect location">
+              <span id="li">&#9678;</span>
+            </button>
+          </div>
+          <span class="error-message" id="adE"></span>
+          <span id="ls" class="loc-status"></span>
+        </div>
+
+        <button type="submit" class="btn-primary" data-i18n="createAccountBtn">Create Account</button>
+
+        <p class="switch-prompt">
+          <span data-i18n="haveAccount">Already have an account?</span> <a href="#" data-sc="login" data-i18n="logIn">Log In</a>
+        </p>
+      </form>
+
+      <div id="signupSuccess" class="success-message hidden">
+        <div class="success-icon">&#10003;</div>
+        <h2 data-i18n="accountCreated">Account Created!</h2>
+        <p data-i18n="welcomeMsg">Welcome to ProFIX.</p>
+        <button class="btn-primary" id="goHome" data-i18n="browseServices">Browse Services</button>
+      </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="s-login" class="screen hidden">
+      <button class="btn-back" data-sc="language" aria-label="Back">&#8592;</button>
+      <div class="header">
+        <div class="logo">
+          <span class="logo-icon">&#9881;</span>
+          <h1 data-i18n="appName">ProFIX</h1>
+        </div>
+        <p class="subtitle" data-i18n="welcomeBack">Welcome back</p>
+      </div>
+
+      <form id="loginForm" class="signup-form" novalidate>
+        <p class="step-label" data-i18n="loginTitle">Log in to your account</p>
+
+        <div class="input-group">
+          <label data-i18n="email">Email Address</label>
+          <input type="email" id="lem" name="lem" placeholder="john@example.com" autocomplete="email">
+          <span class="error-message" id="lemE"></span>
+        </div>
+
+        <div class="input-group">
+          <label data-i18n="password">Password</label>
+          <input type="password" id="lpw" placeholder="Enter your password" autocomplete="current-password">
+          <span class="error-message" id="lpwE"></span>
+        </div>
+
+        <div id="ge" class="global-error"></div>
+        <div id="de" class="login-debug"></div>
+
+        <button type="submit" class="btn-primary" data-i18n="loginBtn">Log In</button>
+
+        <p class="switch-prompt">
+          <span data-i18n="noAccount">Don't have an account?</span> <a href="#" data-sc="signup" data-i18n="signUp">Sign Up</a>
+        </p>
+      </form>
+
+      <div id="loginSuccess" class="success-message hidden">
+        <div class="success-icon">&#10003;</div>
+        <h2 data-i18n="welcomeBackTitle">Welcome back!</h2>
+        <p data-i18n="redirectMsg">Taking you to your dashboard...</p>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <div id="s-home" class="screen hidden">
+      <header class="home-header">
+        <div class="home-top">
+          <h1 class="home-greeting"><span data-i18n="hello">Hello</span>, <span id="un">User</span></h1>
+          <div class="home-actions">
+            <a href="#" id="settingsBtn" class="btn-icon" title="Settings">&#9881;</a>
+            <a href="#" id="profileBtn" class="btn-icon" data-i18n-t="profile" title="Profile">&#128100;</a>
+            <a href="#" id="lo" class="btn-logout" data-i18n="logout">Logout</a>
+          </div>
+        </div>
+        <p class="home-sub" data-i18n="homeSub">What do you need fixed today?</p>
+        <div class="search-bar">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" id="si" data-i18n-pl="searchPlaceholder" placeholder="Search services...">
+        </div>
+      </header>
+      <section class="services-section">
+        <h2 class="section-title" data-i18n="allServices">All Services</h2>
+        <div class="services-grid" id="sg"></div>
+      </section>
+    </div>
+
+    <!-- REQUEST -->
+    <div id="s-request" class="screen hidden">
+      <button class="btn-back" data-sc="subservices" aria-label="Back">&#8592;</button>
+      <div class="header">
+        <div class="logo">
+          <span class="logo-icon">&#9881;</span>
+          <h1 data-i18n="appName">ProFIX</h1>
+        </div>
+        <p class="subtitle" id="reqTitle">Request Service</p>
+      </div>
+
+      <form id="requestForm" class="signup-form" novalidate>
+        <p class="step-label" data-i18n="reqDetails">Service Request Details</p>
+
+        <div class="input-group">
+          <label data-i18n="reqService">Service</label>
+          <input type="text" id="reqService" readonly>
+        </div>
+
+        <div class="input-group" id="reqPriceGroup" style="display:none;">
+          <label data-i18n="reqPrice">Price</label>
+          <input type="text" id="reqPrice" readonly style="font-weight:700;color:#16a34a;">
+          <span class="field-note" id="reqPriceNote" data-i18n="priceNote">This price covers labor only, not materials or parts.</span>
+        </div>
+
+        <div class="input-group">
+          <label data-i18n="reqDesc">Describe the issue <span class="required">*</span></label>
+          <textarea id="reqDesc" rows="4" placeholder="Describe what needs to be fixed..."></textarea>
+          <span class="error-message" id="reqDescE"></span>
+        </div>
+
+        <div class="input-group">
+          <label data-i18n="reqImage">Attach an image <span class="required">*</span></label>
+          <div class="file-wrapper">
+            <input type="file" id="reqImage" accept="image/*" capture="environment">
+            <label for="reqImage" class="btn-file" data-i18n="chooseFile">Choose Image</label>
+            <span id="reqImageName" class="file-name"></span>
+          </div>
+          <span class="error-message" id="reqImageE"></span>
+        </div>
+
+        <div class="input-group">
+          <label data-i18n="fullName">Full Name</label>
+          <input type="text" id="reqName" readonly>
+        </div>
+
+        <div class="input-group">
+          <label data-i18n="phone">Phone Number</label>
+          <input type="tel" id="reqPhone" readonly>
+        </div>
+
+        <div class="input-group">
+          <label data-i18n="address">Location</label>
+          <div class="address-wrapper">
+            <input type="text" id="reqAddr" readonly>
+            <button type="button" id="reqDL" class="btn-detect" data-i18n-t="detectLocation" title="Detect location">
+              <span id="reqLI">&#9678;</span>
+            </button>
+          </div>
+          <span id="reqLS" class="loc-status"></span>
+        </div>
+
+        <button type="submit" class="btn-primary" data-i18n="sendRequest">Send Request</button>
+      </form>
+
+      <div id="requestSuccess" class="success-message hidden">
+        <div class="success-icon">&#10003;</div>
+        <h2 data-i18n="reqSent">Request Sent!</h2>
+        <p data-i18n="reqSentMsg">Your request has been submitted. A provider will contact you soon.</p>
+        <button class="btn-primary" id="reqBackHome" data-i18n="backHome">Back to Home</button>
+      </div>
+    </div>
+
+    <!-- SUB-SERVICES -->
+    <div id="s-subservices" class="screen hidden">
+      <button class="btn-back" data-sc="home" aria-label="Back">&#8592;</button>
+      <div class="header">
+        <div class="logo">
+          <span class="logo-icon">&#9881;</span>
+          <h1 data-i18n="appName">ProFIX</h1>
+        </div>
+        <p class="subtitle" id="ssTitle">Service</p>
+      </div>
+      <div class="subservices-grid" id="ssg"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="s-profile" class="screen hidden">
+      <button class="btn-back" data-sc="home" aria-label="Back">&#8592;</button>
+      <div class="header">
+        <div class="logo">
+          <span class="logo-icon">&#9881;</span>
+          <h1 data-i18n="appName">ProFIX</h1>
+        </div>
+        <p class="subtitle" data-i18n="profileTitle">My Profile</p>
+      </div>
+
+      <div class="profile-avatar" id="pa">JD</div>
+
+      <form id="profileForm" class="signup-form" novalidate>
+        <div class="input-group">
+          <label data-i18n="fullName">Full Name</label>
+          <input type="text" id="pf" name="pf">
+          <span class="error-message" id="pfE"></span>
+        </div>
+        <div class="input-group">
+          <label data-i18n="email">Email Address</label>
+          <input type="email" id="pe" name="pe">
+          <span class="error-message" id="peE"></span>
+        </div>
+        <div class="input-group">
+          <label data-i18n="phone">Phone Number</label>
+          <input type="tel" id="pp" name="pp">
+          <span class="error-message" id="ppE"></span>
+        </div>
+        <div class="input-group">
+          <label data-i18n="address">Address</label>
+          <input type="text" id="pda" name="pda">
+          <span class="error-message" id="pdaE"></span>
+        </div>
+
+        <button type="submit" class="btn-primary" data-i18n="saveBtn">Save Changes</button>
+      </form>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="s-settings" class="screen hidden">
+      <button class="btn-back" data-sc="home" aria-label="Back">&#8592;</button>
+      <div class="header">
+        <div class="logo">
+          <span class="logo-icon">&#9881;</span>
+          <h1 data-i18n="appName">ProFIX</h1>
+        </div>
+        <p class="subtitle" data-i18n="settingsTitle">Settings</p>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="settings-label" data-i18n="languageLabel">Language</h3>
+        <div class="settings-lang-list">
+          <div class="settings-lang-item" data-lang="ku">
+            <span class="settings-lang-name">Kurdish (Sorani)</span>
+            <span class="settings-check">&#10003;</span>
+          </div>
+          <div class="settings-lang-item" data-lang="ar">
+            <span class="settings-lang-name">Arabic</span>
+            <span class="settings-check">&#10003;</span>
+          </div>
+          <div class="settings-lang-item" data-lang="en">
+            <span class="settings-lang-name">English</span>
+            <span class="settings-check">&#10003;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="settings-label" data-i18n="aboutLabel">About</h3>
+        <p class="settings-about" data-i18n="aboutText">ProFIX v1.0 — Service Marketplace Simulator</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js?v=2"></script>
+</body>
+</html>
