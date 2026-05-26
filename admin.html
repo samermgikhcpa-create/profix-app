@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProFIX - Admin Panel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .header span {
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .header a {
+      color: #4a6cf7;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .header a:hover { text-decoration: underline; }
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      flex: 1;
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .stat-card .num {
+      font-size: 28px;
+      font-weight: 700;
+      color: #4a6cf7;
+    }
+    .stat-card .label {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+    .table-wrap {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: 2px solid #e5e7eb;
+      color: #6b7280;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #f9fafb;
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f3f4f6;
+      color: #374151;
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #f9fafb; }
+    .empty {
+      text-align: center;
+      color: #9ca3af;
+      padding: 48px 16px;
+    }
+    .empty p { margin-bottom: 16px; font-size: 15px; }
+    .empty a {
+      color: #4a6cf7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .empty a:hover { text-decoration: underline; }
+    .badge {
+      display: inline-block;
+      background: #eef2ff;
+      color: #4a6cf7;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .status-pending {
+      background: #fef3c7;
+      color: #b45309;
+    }
+    .price-group {
+      margin-bottom: 20px;
+    }
+    .price-group h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+      padding: 10px 14px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 1.5px solid #e5e7eb;
+    }
+    .price-sub {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px 8px 24px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .price-sub:last-child {
+      border-bottom: none;
+    }
+    .price-sub label {
+      flex: 1;
+      font-size: 14px;
+      color: #374151;
+    }
+    .price-sub input[type="number"] {
+      width: 100px;
+      padding: 8px 10px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: right;
+      outline: none;
+    }
+    .price-sub input[type="number"]:focus {
+      border-color: #4a6cf7;
+      box-shadow: 0 0 0 3px rgba(74,108,247,0.12);
+    }
+    .price-sub .currency {
+      font-size: 13px;
+      color: #6b7280;
+      font-weight: 600;
+      min-width: 20px;
+    }
+    .btn-primary {
+      padding: 14px 28px;
+      background: #4a6cf7;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #3b5de7; }
+    .btn-primary:active { transform: scale(0.98); }
+    .status-accepted {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+    .status-completed {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+    .status-cancelled {
+      background: #fce4ec;
+      color: #c62828;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      th, td { padding: 10px 10px; font-size: 13px; }
+      .stats { flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>&#9881; ProFIX Admin</h1>
+        <span id="updateTime"></span>
+      </div>
+      <a href="index.html">&#8592; Back to App</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="num" id="totalUsers">0</div>
+        <div class="label">Registered Users</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="totalRequests">0</div>
+        <div class="label">Service Requests</div>
+      </div>
+    </div>
+
+    <h2 style="margin: 28px 0 14px; font-size: 17px; font-weight: 700; color: #1a1a2e;">&#128203; Users</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+          </tr>
+        </thead>
+        <tbody id="userBody"></tbody>
+      </table>
+    </div>
+
+    <h2 style="margin: 28px 0 14px; font-size: 17px; font-weight: 700; color: #1a1a2e;">&#128276; Service Requests</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Service</th>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="requestBody"></tbody>
+      </table>
+    </div>
+
+    <h2 style="margin: 28px 0 14px; font-size: 17px; font-weight: 700; color: #1a1a2e;">&#128176; Service Prices</h2>
+    <p style="font-size:13px;color:#6b7280;margin-bottom:14px;">Set the labor cost for each service (materials not included).</p>
+
+    <div id="pricingContainer"></div>
+
+    <button id="savePrices" class="btn-primary" style="margin-top:16px;">&#128190; Save All Prices</button>
+    <span id="priceSaved" style="display:none;margin-left:12px;font-size:14px;color:#16a34a;">&#10003; Saved!</span>
+  </div>
+
+  <script>
+    var apiBase = '';
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function load() {
+      var now = new Date();
+      document.getElementById('updateTime').textContent = 'Last updated: ' + now.toLocaleTimeString();
+
+      // Users
+      fetch(apiBase + '/api/users').then(function(r){return r.json()}).then(function(users){
+        document.getElementById('totalUsers').textContent = users.length;
+        var body = document.getElementById('userBody');
+        if (!users.length) {
+          body.innerHTML = '<tr><td colspan="5" class="empty"><div class="empty"><p>No registered users yet.</p></div></td></tr>';
+        } else {
+          var h = '';
+          for (var i = 0; i < users.length; i++) {
+            var u = users[i];
+            h += '<tr>' +
+              '<td>' + (i + 1) + '</td>' +
+              '<td>' + esc(u.full_name) + '</td>' +
+              '<td>' + esc(u.email) + '</td>' +
+              '<td>' + esc(u.phone || '-') + ' <span class="badge">WhatsApp</span></td>' +
+              '<td>' + esc(u.address || '-') + '</td>' +
+              '</tr>';
+          }
+          body.innerHTML = h;
+        }
+      }).catch(function(){
+        // Fallback to localStorage
+        var users = [];
+        try { var s = localStorage.getItem('profit_users'); if (s) users = JSON.parse(s); } catch(e) {}
+        document.getElementById('totalUsers').textContent = users.length;
+        var body = document.getElementById('userBody');
+        if (!users.length) {
+          body.innerHTML = '<tr><td colspan="5" class="empty"><div class="empty"><p>No registered users yet.</p></div></td></tr>';
+        } else {
+          var h = '';
+          for (var i = 0; i < users.length; i++) {
+            var u = users[i];
+            h += '<tr>' +
+              '<td>' + (i + 1) + '</td>' +
+              '<td>' + esc(u.fullName) + '</td>' +
+              '<td>' + esc(u.email) + '</td>' +
+              '<td>' + esc(u.phone || '-') + ' <span class="badge">WhatsApp</span></td>' +
+              '<td>' + esc(u.address || '-') + '</td>' +
+              '</tr>';
+          }
+          body.innerHTML = h;
+        }
+      });
+
+      // Requests
+      fetch(apiBase + '/api/requests').then(function(r){return r.json()}).then(function(reqs){
+        document.getElementById('totalRequests').textContent = reqs.length;
+        var rbody = document.getElementById('requestBody');
+        if (!reqs.length) {
+          rbody.innerHTML = '<tr><td colspan="9" class="empty"><div class="empty"><p>No service requests yet.</p></div></td></tr>';
+        } else {
+          var rh = '';
+          for (var i = 0; i < reqs.length; i++) {
+            var rq = reqs[i];
+            var d = new Date(rq.created_at);
+            var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+            var imgHtml = rq.image_path ? '<span class="badge">&#128206; <a href="' + apiBase + '/uploads/' + esc(rq.image_path) + '" target="_blank">View</a></span>' : '-';
+            rh += '<tr>' +
+              '<td>' + (i + 1) + '</td>' +
+              '<td><strong>' + esc(rq.svc_name || '-') + '</strong><br><span style="font-size:12px;color:#6b7280;">' + esc(rq.sub_name || '') + '</span></td>' +
+              '<td>' + esc(rq.user_name || '-') + '</td>' +
+              '<td>' + esc(rq.phone || '-') + '</td>' +
+              '<td style="max-width:200px;word-break:break-word;">' + esc(rq.description || '-') + '</td>' +
+              '<td>' + imgHtml + '</td>' +
+              '<td style="max-width:150px;word-break:break-word;">' + esc(rq.address || '-') + '</td>' +
+              '<td style="white-space:nowrap;">' + dateStr + '</td>' +
+              '<td><span class="badge status-' + esc(rq.status || 'pending') + '">' + esc(rq.status || 'pending') + '</span></td>' +
+              '</tr>';
+          }
+          rbody.innerHTML = rh;
+        }
+      }).catch(function(){
+        // Fallback to localStorage
+        var reqs = [];
+        try { var r = localStorage.getItem('profit_requests'); if (r) reqs = JSON.parse(r); } catch(e) {}
+        document.getElementById('totalRequests').textContent = reqs.length;
+        var rbody = document.getElementById('requestBody');
+        if (!reqs.length) {
+          rbody.innerHTML = '<tr><td colspan="9" class="empty"><div class="empty"><p>No service requests yet.</p></div></td></tr>';
+        } else {
+          var rh = '';
+          for (var i = reqs.length - 1; i >= 0; i--) {
+            var rq = reqs[i];
+            var d = new Date(rq.date);
+            var dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+            rh += '<tr>' +
+              '<td>' + (reqs.length - i) + '</td>' +
+              '<td><strong>' + esc(rq.svcName || '-') + '</strong><br><span style="font-size:12px;color:#6b7280;">' + esc(rq.subName || '') + '</span></td>' +
+              '<td>' + esc(rq.userName || '-') + '</td>' +
+              '<td>' + esc(rq.phone || '-') + '</td>' +
+              '<td style="max-width:200px;word-break:break-word;">' + esc(rq.description || '-') + '</td>' +
+              '<td>' + (rq.imageName ? '<span class="badge">&#128206; ' + esc(rq.imageName) + '</span>' : '-') + '</td>' +
+              '<td style="max-width:150px;word-break:break-word;">' + esc(rq.address || '-') + '</td>' +
+              '<td style="white-space:nowrap;">' + dateStr + '</td>' +
+              '<td><span class="badge status-' + esc(rq.status || 'pending') + '">' + esc(rq.status || 'pending') + '</span></td>' +
+              '</tr>';
+          }
+          rbody.innerHTML = rh;
+        }
+      });
+    }
+
+    load();
+    setInterval(load, 10000);
+
+    // ---- PRICING ----
+    var svcData = [
+      { id: 1, name: 'Car Repair', subs: [
+        { id: 101, name: 'Oil Change' }, { id: 102, name: 'Brake Repair' },
+        { id: 103, name: 'Engine Repair' }, { id: 104, name: 'Tire Change' },
+        { id: 105, name: 'Car Wash' }
+      ]},
+      { id: 2, name: 'Moving', subs: [
+        { id: 201, name: 'Packing' }, { id: 202, name: 'Loading' },
+        { id: 203, name: 'Transportation' }, { id: 204, name: 'Unpacking' },
+        { id: 205, name: 'Furniture Assembly' }
+      ]},
+      { id: 3, name: 'Plumbing', subs: [
+        { id: 301, name: 'Pipe Repair' }, { id: 302, name: 'Drain Cleaning' },
+        { id: 303, name: 'Water Heater' }, { id: 304, name: 'Faucet Repair' },
+        { id: 305, name: 'Toilet Repair' }
+      ]},
+      { id: 4, name: 'Electrical', subs: [
+        { id: 401, name: 'Wiring' }, { id: 402, name: 'Switch & Outlet' },
+        { id: 403, name: 'Light Installation' }, { id: 404, name: 'Panel Repair' },
+        { id: 405, name: 'Ceiling Fan' }
+      ]},
+      { id: 5, name: 'Cleaning', subs: [
+        { id: 501, name: 'Home Cleaning' }, { id: 502, name: 'Office Cleaning' },
+        { id: 503, name: 'Deep Cleaning' }, { id: 504, name: 'Carpet Cleaning' },
+        { id: 505, name: 'Window Cleaning' }
+      ]},
+      { id: 6, name: 'Painting', subs: [
+        { id: 601, name: 'Interior Painting' }, { id: 602, name: 'Exterior Painting' },
+        { id: 603, name: 'Wallpaper' }, { id: 604, name: 'Paint Removal' },
+        { id: 605, name: 'Ceiling Painting' }
+      ]},
+      { id: 7, name: 'IT Support', subs: [
+        { id: 701, name: 'Computer Repair' }, { id: 702, name: 'Network Setup' },
+        { id: 703, name: 'Virus Removal' }, { id: 704, name: 'Data Recovery' },
+        { id: 705, name: 'Software Install' }
+      ]},
+      { id: 8, name: 'Tutoring', subs: [
+        { id: 801, name: 'Math Tutoring' }, { id: 802, name: 'Science Tutoring' },
+        { id: 803, name: 'Language Tutoring' }, { id: 804, name: 'Test Preparation' },
+        { id: 805, name: 'Programming' }
+      ]},
+      { id: 9, name: 'AC Repair', subs: [
+        { id: 901, name: 'Clean Split Unit' }, { id: 902, name: 'Gas Refill' },
+        { id: 903, name: 'Install Split Unit' }, { id: 904, name: 'Move Split Unit' },
+        { id: 905, name: 'Dismantle Split Unit' }
+      ]}
+    ];
+
+    function renderPricing() {
+      var c = document.getElementById('pricingContainer');
+      var h = '';
+      // Try API first
+      fetch(apiBase + '/api/prices').then(function(r){return r.json()}).then(function(prices){
+        for (var i = 0; i < svcData.length; i++) {
+          var s = svcData[i];
+          h += '<div class="price-group">';
+          h += '<h3>' + esc(s.name) + ' <span style="font-weight:400;font-size:13px;color:#6b7280;">(main)</span>' +
+            ' <input type="number" id="p_main_' + s.id + '" value="' + (prices[s.id] || '') + '" placeholder="0" style="width:90px;padding:4px 8px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;text-align:right;float:right;">' +
+            ' <span class="currency" style="float:right;line-height:30px;margin-right:4px;">د.ع</span></h3>';
+          for (var j = 0; j < s.subs.length; j++) {
+            var sub = s.subs[j];
+            var val = prices[sub.id] || '';
+            h += '<div class="price-sub">' +
+              '<label>' + esc(sub.name) + '</label>' +
+              '<input type="number" id="p_sub_' + sub.id + '" value="' + val + '" placeholder="0">' +
+              '<span class="currency">د.ع</span>' +
+              '</div>';
+          }
+          h += '</div>';
+        }
+        c.innerHTML = h;
+      }).catch(function(){
+        // Fallback localStorage
+        var prices = {};
+        try { var p = localStorage.getItem('profit_prices'); if (p) prices = JSON.parse(p); } catch(e) {}
+        for (var i = 0; i < svcData.length; i++) {
+          var s = svcData[i];
+          h += '<div class="price-group">';
+          h += '<h3>' + esc(s.name) + ' <span style="font-weight:400;font-size:13px;color:#6b7280;">(main)</span>' +
+            ' <input type="number" id="p_main_' + s.id + '" value="' + (prices[s.id] || '') + '" placeholder="0" style="width:90px;padding:4px 8px;border:1.5px solid #d1d5db;border-radius:6px;font-size:13px;text-align:right;float:right;">' +
+            ' <span class="currency" style="float:right;line-height:30px;margin-right:4px;">د.ع</span></h3>';
+          for (var j = 0; j < s.subs.length; j++) {
+            var sub = s.subs[j];
+            var val = prices[sub.id] || '';
+            h += '<div class="price-sub">' +
+              '<label>' + esc(sub.name) + '</label>' +
+              '<input type="number" id="p_sub_' + sub.id + '" value="' + val + '" placeholder="0">' +
+              '<span class="currency">د.ع</span>' +
+              '</div>';
+          }
+          h += '</div>';
+        }
+        c.innerHTML = h;
+      });
+    }
+
+    renderPricing();
+
+    document.getElementById('savePrices').addEventListener('click', function () {
+      var prices = {};
+      for (var i = 0; i < svcData.length; i++) {
+        var s = svcData[i];
+        var mainEl = document.getElementById('p_main_' + s.id);
+        if (mainEl && mainEl.value) prices[s.id] = mainEl.value;
+        for (var j = 0; j < s.subs.length; j++) {
+          var sub = s.subs[j];
+          var subEl = document.getElementById('p_sub_' + sub.id);
+          if (subEl && subEl.value) prices[sub.id] = subEl.value;
+        }
+      }
+      // Try API first
+      fetch(apiBase + '/api/prices', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(prices)
+      }).catch(function(){
+        try { localStorage.setItem('profit_prices', JSON.stringify(prices)); } catch(e) {}
+      }).then(function(){
+        var msg = document.getElementById('priceSaved');
+        msg.style.display = 'inline';
+        setTimeout(function () { msg.style.display = 'none'; }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>
